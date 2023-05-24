@@ -3,16 +3,35 @@ import PropTypes from 'prop-types'
 import { BarGraph } from './BarGraph'
 import { alliedSet } from '../public/utils/data'
 
-export const QtySkillBillRate = ({ skillSet, data }) => {
+export const QtySkillBillRate = ({
+	skillSet,
+	data,
+	rate,
+	id,
+	weeklySpend,
+	setWeeklySpend,
+}) => {
 	const [qty, setQty] = useState(1)
 
-	let skillSetText = ''
-	const billRate = data[data.length - 1].rate
+	// let skillSetText = ''
+	// const billRate = data[data.length - 1].rate
 
-	if (alliedSet.has(skillSet)) {
-		skillSetText = `Allied - ${skillSet}`
-	} else {
-		skillSetText = `RN - ${skillSet}`
+	// if (alliedSet.has(skillSet)) {
+	// 	skillSetText = `Allied - ${skillSet}`
+	// } else {
+	// 	skillSetText = `RN - ${skillSet}`
+	// }
+
+	const handleQtyChange = e => {
+		const updatedData = weeklySpend.map(data => {
+			console.log(data.id === parseInt(e.target.id))
+			if (data.id === parseInt(e.target.id)) {
+				data.qty = parseInt(e.target.value)
+			}
+			return data
+		})
+		setWeeklySpend(updatedData)
+		setQty(e.target.value)
 	}
 
 	return (
@@ -28,7 +47,8 @@ export const QtySkillBillRate = ({ skillSet, data }) => {
 			<input
 				type='text'
 				value={qty}
-				onChange={event => setQty(event.target.value)}
+				id={id}
+				onChange={event => handleQtyChange(event)}
 				style={{
 					padding: '3px',
 					width: '50px',
@@ -41,8 +61,8 @@ export const QtySkillBillRate = ({ skillSet, data }) => {
 				style={{ backgroundColor: '#F7F7F7', padding: '5px', flex: '2' }}
 			>
 				<section style={{ display: 'flex', justifyContent: 'space-between' }}>
-					<h1>{skillSetText}</h1>
-					<h1>${Number(billRate * qty).toFixed(2)}</h1>
+					<h1>{skillSet}</h1>
+					<h1>${Number(rate).toFixed(2)}</h1>
 				</section>
 				<BarGraph data={data} qty={qty} />
 			</article>

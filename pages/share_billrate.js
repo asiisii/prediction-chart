@@ -3,11 +3,18 @@ import { motion } from 'framer-motion'
 import { BillRateCard } from '@/components/BillRateCard'
 import { BillRateLayout } from '@/components/BillRateLayout'
 import { MdOutlineThumbUp, MdOutlineEmail, MdOutlineSend } from 'react-icons/md'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { usePageProviderContext } from '@/components/PageContext'
+import PrivateRoute from '@/components/PrivateRoute'
 
 const ShareBillRatePage = () => {
 	const [activeCard, setActiveCard] = useState(null)
+	const [, setPageTitle] = usePageProviderContext()
 	const router = useRouter()
+
+	useEffect(() => {
+		setPageTitle('Share Bill Rate')
+	}, [])
 
 	const redirectPage = () => {
 		if (activeCard === 2) return router.push('/generate_order')
@@ -70,4 +77,4 @@ const ShareBillRatePage = () => {
 	)
 }
 
-export default ShareBillRatePage
+export default PrivateRoute(ShareBillRatePage)

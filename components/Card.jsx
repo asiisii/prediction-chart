@@ -3,7 +3,7 @@ import { DashboardBarGraph } from './DashboardBarGraph'
 
 export const Card = ({ title, total, direction, rate, graphcolor }) => {
 	return (
-		<section className='w-[450px] bg-white rounded-lg p-3'>
+		<section className='w-[350px] bg-white rounded-lg p-3'>
 			<h1 className='text-[30px] font-semibold text-gray-500 mb-4'>{title}</h1>
 			<article className='flex align-center justify-between'>
 				<div className='flex flex-col justify-between'>

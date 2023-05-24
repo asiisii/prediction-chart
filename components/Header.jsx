@@ -5,9 +5,11 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FaUserAstronaut } from 'react-icons/fa'
 import { MdNotificationsNone } from 'react-icons/md'
+import { usePageProviderContext } from './PageContext'
 
-export const Header = ({ title }) => {
+export const Header = () => {
 	const [logoAnimation, setLogoAnimation] = useState(false)
+  const [pgTitle] = usePageProviderContext()
 	const router = useRouter()
 
 	useEffect(() => {
@@ -24,7 +26,7 @@ export const Header = ({ title }) => {
 				<Image className='w-[250px]' src={logo} alt='amn passport logo' />
 			</div>
 			<p className='text-[25px] m-auto font-semibold text-white'>
-				Welcome back, Carrie!{title}
+				{pgTitle}
 			</p>
 			<div className='flex items-center gap-5 text-3xl text-white'>
 				<MdNotificationsNone />

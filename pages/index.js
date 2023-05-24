@@ -14,7 +14,7 @@ export default function LoginPage() {
 	const handleSignIn = e => {
 		e.preventDefault()
 
-		if (email === 'a@test.com' && password === '123456') {
+		if (email === 'asiisii@test.com' && password === '123456') {
 			localStorage.setItem('email', email)
 			localStorage.setItem('password', password)
 			setLogoTransition(true)

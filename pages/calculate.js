@@ -22,6 +22,8 @@ import {
 import { RiShareForwardFill } from 'react-icons/ri'
 import { AiOutlineTable } from 'react-icons/ai'
 import { BsFillPlusCircleFill } from 'react-icons/bs'
+import { usePageProviderContext } from '@/components/PageContext'
+import PrivateRoute from '@/components/PrivateRoute'
 
 //To be replaced with env variable
 const API_KEY = process.env.API_KEY
@@ -124,14 +126,20 @@ const CalculatePage = () => {
 	const [discipline, setDiscipline] = useState('')
 	const [predictions, setPredictions] = useState({})
 	const [todayDate, setTodayDate] = useState()
-	const [weeklySpend, setWeeklySpend] = useState([0])
+	const [weeklySpend, setWeeklySpend] = useState([])
+	const [, setPageTitle] = usePageProviderContext()
 	const router = useRouter()
 
 	useEffect(() => {
+		setPageTitle('Bill Rate')
 		const dateStr = new Date().toString()
 		const formattedDate = dateStr.slice(0, 15)
 		setTodayDate(formattedDate)
-	})
+	}, [])
+
+	useEffect(() => {
+		getTotalWeeklySpend()
+	}, [predictions])
 
 	const addNewPrediction = (prediction, specialty) => {
 		setPredictions({ ...predictions, [specialty]: prediction })
@@ -177,19 +185,68 @@ const CalculatePage = () => {
 	const generateBarGraph = () => {
 		let data = 0
 		// setWeeklySpend(prevSend => [...prevSend, data])
-		return Object.keys(predictions).map(specialty => {
-			data += predictions[specialty].slice(-1)[0].rate
+		// return Object.keys(predictions).map(specialty => {
+		// 	data += predictions[specialty].slice(-1)[0].rate
 
-			console.log(data)
+		// 	console.log(data)
+		// 	return (
+		// 		<QtySkillBillRate
+		// 			key={specialty}
+		// 			data={predictions[specialty]}
+		// 			skillSet={specialty}
+		// 		/>
+		// 	)
+		// })
+		// id: 0
+		// qty: 1
+		// rate: 91.8883253869
+		// skillSet : "RN - LTAC"
+		return weeklySpend.map(spending => {
 			return (
 				<QtySkillBillRate
-					key={specialty}
-					data={predictions[specialty]}
-					skillSet={specialty}
+					id={spending.id}
+					key={spending.id}
+					rate={spending.rate}
+					data={spending.data}
+					skillSet={spending.skillSet}
+					weeklySpend={weeklySpend}
+					setWeeklySpend={setWeeklySpend}
 				/>
 			)
 		})
 	}
+
+	const getSkillSetText = skillSet => {
+		let skillSetText = ''
+		if (alliedSet.has(skillSet)) {
+			skillSetText = `Allied - ${skillSet}`
+		} else {
+			skillSetText = `RN - ${skillSet}`
+		}
+		return skillSetText
+	}
+
+	const getTotalWeeklySpend = () => {
+		const updatedWeeklySpend = Object.keys(predictions).map((specialty, i) => ({
+			id: i,
+			qty: 1,
+			rate: predictions[specialty].slice(-1)[0].rate,
+			skillSet: getSkillSetText(specialty),
+			data: predictions[specialty],
+			key: i,
+		}))
+
+		setWeeklySpend(updatedWeeklySpend)
+		return 0
+	}
+
+	const getTotal = () => {
+		return weeklySpend.reduce(
+			(sum, cur) => (sum += cur.rate.toFixed(2) * cur.qty),
+			0
+		)
+	}
+	// console.log(getTotal())
 
 	return (
 		<motion.div
@@ -308,7 +365,9 @@ const CalculatePage = () => {
 								<p className='flex justify-end items-center'>
 									Weekly Spend: $
 									<span className='font-bold text-[25px]'>
-										{calculateWeeklySpend().toFixed(2)}
+										{/* {calculateWeeklySpend().toFixed(2)} */}
+										{/* {getTotalWeeklySpend()} */}
+										{getTotal()}
 									</span>
 								</p>
 								<div className='flex gap-3 justify-end'>
@@ -359,4 +418,4 @@ const CalculatePage = () => {
 	)
 }
 
-export default CalculatePage
+export default PrivateRoute(CalculatePage)

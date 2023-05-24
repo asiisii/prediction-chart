@@ -11,7 +11,7 @@ const PrivateRoute = WrappedComponent => {
 		}, [])
 
 		const checkAuthentication = () => {
-			const email = 'a@test.com'
+			const email = 'asiisii@test.com'
 			const password = '123456'
 
 			const storedEmail = localStorage.getItem('email')

@@ -3,9 +3,18 @@ import { useRouter } from 'next/router'
 import Button from '@/components/Button'
 import { SuccessCard } from '@/components/SuccessCard'
 import { BsCheckCircleFill, BsHospital } from 'react-icons/bs'
+import { useEffect } from 'react'
+import { usePageProviderContext } from '@/components/PageContext'
+import PrivateRoute from '@/components/PrivateRoute'
 
 const SuccessPage = () => {
+	const [, setPageTitle] = usePageProviderContext()
 	const router = useRouter()
+
+	useEffect(() => {
+		setPageTitle('Success')
+	}, [])
+
 	const handleClose = () => {
 		setTimeout(() => {
 			router.push('/dashboard')
@@ -78,4 +87,4 @@ const SuccessPage = () => {
 	)
 }
 
-export default SuccessPage
+export default PrivateRoute(SuccessPage)

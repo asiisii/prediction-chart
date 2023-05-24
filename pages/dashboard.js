@@ -8,8 +8,17 @@ import { FaSlidersH } from 'react-icons/fa'
 import { FcOnlineSupport } from 'react-icons/fc'
 import { MdBarChart } from 'react-icons/md'
 import { MdOutlineThumbUp } from 'react-icons/md'
+// import { usePageProviderContext } from '@/components/PageContext'
+import { useEffect } from 'react'
+import { usePageProviderContext } from '@/components/PageContext'
 
 const DashboardPage = () => {
+	const [pageTitle, setPageTitle] = usePageProviderContext()
+
+	useEffect(() => {
+		setPageTitle('Welcome back, Asiisii')
+	}, [])
+
 	return (
 		<motion.div
 			initial={{ y: '100%' }}

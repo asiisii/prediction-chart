@@ -1,13 +1,20 @@
 import { motion } from 'framer-motion'
 import { BillRateLayout } from '@/components/BillRateLayout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { BsInfoCircle } from 'react-icons/bs'
 import { ImSpinner8 } from 'react-icons/im'
+import { usePageProviderContext } from '@/components/PageContext'
+import PrivateRoute from '@/components/PrivateRoute'
 
 const GenerateOrderPage = () => {
 	const [isPublishing, setIsPublishing] = useState(false)
+	const [, setPageTitle] = usePageProviderContext()
 	const router = useRouter()
+
+	useEffect(() => {
+		setPageTitle('Generate Order')
+	}, [])
 
 	const initialContent = () => (
 		<div className='flex justify-between w-full'>
@@ -96,4 +103,4 @@ const GenerateOrderPage = () => {
 	)
 }
 
-export default GenerateOrderPage
+export default PrivateRoute(GenerateOrderPage)
