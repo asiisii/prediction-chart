@@ -1,5 +1,17 @@
-import '@/styles/globals.css'
+import '../styles/globals.css'
+import Layout from '../components/Layout'
+import PageNotFound from './404'
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+	const is404Page = Component === PageNotFound
+
+	if (is404Page) return <PageNotFound />
+
+	return (
+		<Layout>
+			<Component {...pageProps} />
+		</Layout>
+	)
 }
+
+export default MyApp
