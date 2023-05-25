@@ -176,31 +176,7 @@ const CalculatePage = () => {
 
 	const shareBillRates = () => router.push('/share_billrate')
 
-	const calculateWeeklySpend = () => {
-		return weeklySpend.length > 0
-			? weeklySpend.reduce((sum, rateCost) => sum + rateCost, 0)
-			: 0
-	}
-
 	const generateBarGraph = () => {
-		let data = 0
-		// setWeeklySpend(prevSend => [...prevSend, data])
-		// return Object.keys(predictions).map(specialty => {
-		// 	data += predictions[specialty].slice(-1)[0].rate
-
-		// 	console.log(data)
-		// 	return (
-		// 		<QtySkillBillRate
-		// 			key={specialty}
-		// 			data={predictions[specialty]}
-		// 			skillSet={specialty}
-		// 		/>
-		// 	)
-		// })
-		// id: 0
-		// qty: 1
-		// rate: 91.8883253869
-		// skillSet : "RN - LTAC"
 		return weeklySpend.map(spending => {
 			return (
 				<QtySkillBillRate
@@ -240,13 +216,13 @@ const CalculatePage = () => {
 		return 0
 	}
 
-	const getTotal = () => {
-		return weeklySpend.reduce(
-			(sum, cur) => (sum += cur.rate.toFixed(2) * cur.qty),
+	const getWeeklyBudget = () => {
+		const totalBudget = weeklySpend.reduce(
+			(sum, cur) => (sum += cur.rate * cur.qty),
 			0
 		)
+		return (totalBudget * 36).toFixed(2) // times 36 to get the weekly budget
 	}
-	// console.log(getTotal())
 
 	return (
 		<motion.div
@@ -366,8 +342,8 @@ const CalculatePage = () => {
 									Weekly Spend: $
 									<span className='font-bold text-[25px]'>
 										{/* {calculateWeeklySpend().toFixed(2)} */}
-										{/* {getTotalWeeklySpend()} */}
-										{getTotal()}
+										{/* {getWeeklyBudgetWeeklySpend()} */}
+										{getWeeklyBudget()}
 									</span>
 								</p>
 								<div className='flex gap-3 justify-end'>
